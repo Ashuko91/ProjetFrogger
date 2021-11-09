@@ -77,8 +77,8 @@ public class Game {
 	 * @return true si le partie est perdue
 	 */
 	public boolean testLose() {
-
-		return false;
+		Case ordonnee = frog.getPosition();
+		return !environment.isSafe(ordonnee);
 	}
 
 	/**
@@ -89,10 +89,7 @@ public class Game {
 	 */
 	public boolean testWin() {
 		Case ordonnee = frog.getPosition();
-		if(environment.isWinningPosition(ordonnee) == true){
-			return true;
-		}
-		return false;
+		return environment.isWinningPosition(ordonnee);
 	}
 
 	/**
@@ -105,6 +102,12 @@ public class Game {
 		this.graphic.add(new Element(frog.getPosition(), Color.GREEN));
 		testLose();
 		testWin();
+		if (testLose()){
+			System.out.println("Vous avez perdu !");
+		}
+		if (testWin()){
+			System.out.println("Vous avez gagner !");
+		}
 	}
 
 }

@@ -32,5 +32,14 @@ public class Frog implements IFrog {
 		if(key == direction.up && this.position.ord < this.game.height-1) {
 			this.position = new Case(this.position.absc,this.position.ord + 1);
 		}
+		if(key == direction.down && this.position.ord > 0) {
+			this.position = new Case(this.position.absc,this.position.ord - 1);
+		}
+		if(key == direction.left && this.position.absc > 0) {
+			this.position = new Case(this.position.absc - 1,this.position.ord);
+		}
+		if(key == direction.right && this.position.absc < this.game.width-1) {
+			this.position = new Case(this.position.absc + 1,this.position.ord);
+		}
 	}
 }
