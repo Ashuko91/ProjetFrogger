@@ -2,7 +2,6 @@ package environment;
 
 import java.util.ArrayList;
 
-import gameCommons.IEnvironment;
 import util.Case;
 import gameCommons.Game;
 
@@ -11,24 +10,42 @@ public class Lane {
 	private Game game;
 	private int ord;
 	private int speed;
-	private ArrayList<Car> cars = new ArrayList<>();
+	private ArrayList<Car> cars ;
 	private boolean leftToRight;
 	private double density;
-	private Environment environment;
+	private int decompte;
 
 	// TODO : Constructeur(s)
 	public Lane(Game game, int ord, int speed, boolean leftToRight, double density){
+		this.cars = new ArrayList<>();
 		this.game = game;
 		this.ord = ord;
 		this.speed = speed;
 		this.leftToRight = leftToRight;
 		this.density = density;
+		this.decompte=0;
+		for(int i=0;i< 3*game.width;i++){
+			update();
+		}
+
 	}
 
 	public void update() {
 
+		for(int i=0;i<cars.size();i++){
+			cars.get(i).update(decompte==speed);
+			if(cars.get(i).getLeftPosition().absc> game.width+5 || cars.get(i).getLeftPosition().absc< -6 ){
+				cars.remove(i);
+			}
+		}
+		if(decompte == speed){
+			decompte=0;
+			mayAddCar();
+		}else decompte++;
 
-		// TODO
+	}
+
+
 
 		// Toutes les voitures se d�placent d'une case au bout d'un nombre "tic
 		// d'horloge" �gal � leur vitesse
@@ -39,9 +56,18 @@ public class Lane {
 
 		// A chaque tic d'horloge, une voiture peut �tre ajout�e
 
-	}
+
 
 	// TODO : ajout de methodes
+
+
+	public boolean isSafe(Case c) {
+		for (Car car : cars) {
+			if(!car.isSafe(c)) {
+				return false;
+			}
+		}return true;
+	}
 
 	/*
 	 * Fourni : mayAddCar(), getFirstCase() et getBeforeFirstCase() 
@@ -52,7 +78,7 @@ public class Lane {
 	 * densit�, si la premi�re case de la voie est vide
 	 */
 	private void mayAddCar() {
-		if (environment.isSafe(getFirstCase()) && environment.isSafe(getBeforeFirstCase())) {
+		if (isSafe(getFirstCase()) && isSafe(getBeforeFirstCase())) {
 			if (game.randomGen.nextDouble() < density) {
 				cars.add(new Car(game, getBeforeFirstCase(), leftToRight));
 			}

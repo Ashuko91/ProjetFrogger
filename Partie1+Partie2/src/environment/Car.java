@@ -19,13 +19,33 @@ public class Car {
 		this.game = game;
 		this.leftPosition = leftPosition;
 		this.leftToRight = leftToRight;
+		this.length = game.randomGen.nextInt(3);
+
 
 	}
 	//TODO : ajout de methodes
-	public void GenLengthCar(){
-		this.length = game.randomGen.nextInt();
+
+	public boolean isSafe(Case c){
+		if (c.absc == this.leftPosition.absc){
+			return false;
+		}return true;
 	}
-	
+
+	public void update(boolean bouge){
+		if(bouge){
+			if (leftToRight)
+				leftPosition = new Case(this.leftPosition.absc+1, this.leftPosition.ord);
+			else{
+				leftPosition = new Case(this.leftPosition.absc-1, this.leftPosition.ord);
+			}
+
+		}this.addToGraphics();
+	}
+
+	public Case getLeftPosition(){
+		return this.leftPosition;
+	}
+
 	
 	/* Fourni : addToGraphics() permettant d'ajouter un element graphique correspondant a la voiture*/
 	private void addToGraphics() {
@@ -34,8 +54,7 @@ public class Car {
 			if (this.leftToRight){
 				color = colorLtR;
 			}
-			game.getGraphic()
-					.add(new Element(leftPosition.absc + i, leftPosition.ord, color));
+			game.getGraphic().add(new Element(leftPosition.absc + i, leftPosition.ord, color));
 		}
 	}
 
