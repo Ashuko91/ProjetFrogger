@@ -15,13 +15,11 @@ public class Environment implements IEnvironment {
 
         this.game = game;
         this.lanes = new ArrayList<>();
-
-        //Remplissage du tableau des voies : lanes
-        this.lanes.add(new Lane(this.game,0,0,true,0)); //première ligne sans voiture (grenouille)
+        this.lanes.add(new Lane(this.game,0,0,true,0));
         for (int i =1; i< game.height-1;i++){
             this.lanes.add(new Lane (game, i,3 , game.randomGen.nextBoolean() ,0.2));
         }
-        this.lanes.add(new Lane(this.game,this.game.height-1,0,true,0));    } //dernière ligne sans voiture (arrivé)
+        this.lanes.add(new Lane(this.game,this.game.height-1,0,true,0));    }
 
     @Override
     public boolean isSafe(Case c) {

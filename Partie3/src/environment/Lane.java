@@ -2,6 +2,7 @@ package environment;
 
 import java.util.ArrayList;
 
+
 import util.Case;
 import gameCommons.Game;
 
@@ -19,30 +20,41 @@ public class Lane {
 	public Lane(Game game, int ord, int speed, boolean leftToRight, double density){
 		this.cars = new ArrayList<>();
 		this.game = game;
-		this.ord = ord; //son indice dans la liste des voies du jeu
+		this.ord = ord;
 		this.speed = speed;
 		this.leftToRight = leftToRight;
 		this.density = density;
 		this.decompte=0;
-
-		//Remplissage initial du tableau de voitures : cars
-		for(int i=0;i< 3*game.width;i++){
+		for(int i=0;i< game.width;i++){
 			update();
 		}
 
 	}
 
+	public void setOrd(int ord) {
+		this.ord = ord;
+	}
+
+	public int getOrd() {
+		return ord;
+	}
+
+	public Lane(Game game, int ord) {
+
+		this(game, ord, 3, game.randomGen.nextBoolean() , game.defaultDensity);
+	}
+
 	public void update() {
 
 		for(int i=0;i<cars.size();i++){
-			cars.get(i).update(decompte==speed); // déplacement des voitures
+			cars.get(i).update(decompte==speed);
 			if(cars.get(i).getLeftPosition().absc> game.width+5 || cars.get(i).getLeftPosition().absc< -6 ){
-				cars.remove(i);  // les voitures sont suprimmées apres avoir depasser les limites
+				cars.remove(i);
 			}
 		}
-		if(decompte == speed){ //il faut qu'assez de temps se soit écoulé pour que les voitures se déplacent
+		if(decompte == speed){
 			decompte=0;
-			mayAddCar();  //si les voitures se déplacent, la première case de la voie se libère
+			mayAddCar();
 		}else decompte++;
 
 	}
@@ -63,13 +75,12 @@ public class Lane {
 	// TODO : ajout de methodes
 
 
-	//On regarde si la case ou est notre voiture est vide, on parcours donc tout le tableau
 	public boolean isSafe(Case c) {
-		for (Car car : cars) { //on étudie chaque voiture du tableau de voitures associé à la voie
+		for (Car car : cars) {
 			if(!car.isSafe(c)) {
 				return false;
 			}
-		}return true; //si on ne trouve aucune voiture sur cette case, renvoie True car la case est libre
+		}return true;
 	}
 
 	/*

@@ -15,6 +15,8 @@ public class Game {
 	public final int height;
 	public final int minSpeedInTimerLoops;
 	public final double defaultDensity;
+	public int score;
+	public int limite;
 
 	// Lien aux objets utilis�s
 	private IEnvironment environment;
@@ -96,15 +98,18 @@ public class Game {
 	public void update() {
 		graphic.clear();
 		environment.update();
-		this.graphic.add(new Element(frog.getPosition(), Color.GREEN));
+		this.graphic.add(new Element(this.frog.getPosition().absc,1, Color.GREEN));
 		testLose();
 		testWin();
 		if (testLose()){
-			graphic.endGameScreen("T'a perdu :(");
+			graphic.endGameScreen("T'es nul, Score : " + this.limite);
 		}
 		if (testWin()){
 			graphic.endGameScreen("GG bro");
 		}
 	}
 
+	public void ajouteLane() {
+		this.environment.ajouteLane();
+	}
 }

@@ -15,32 +15,31 @@ public class Car {
 	private final Color colorRtL = Color.BLUE;
 
 	//TODO Constructeur(s)
-	public Car(Game game, Case leftPosition, boolean leftToRight) { //Constructeur de la voiture : //Construit à partir de cette ligne dans Lane : "cars.add(new Car(game, getBeforeFirstCase(), leftToRight));"
+	public Car(Game game, Case leftPosition, boolean leftToRight) {
 		this.game = game;
 		this.leftPosition = leftPosition;
-		this.leftToRight = leftToRight; //ne peut pas être choisi aléatoirement, car le sens de la voiture doit être coordonné avec celui des autres voitures de sa voie
-		this.length = game.randomGen.nextInt(3); //methode random( (max-min)) qui permet d'entrer en arg une valeur entière qui servira de limite
+		this.leftToRight = leftToRight;
+		this.length = game.randomGen.nextInt(3);
 
 
 	}
 	//TODO : ajout de methodes
 
-	public boolean isSafe(Case c){ // test si la case est vide
+	public boolean isSafe(Case c){
 		if (c.absc == this.leftPosition.absc){
 			return false;
 		}return true;
 	}
 
-	//Voiture qui bouge selon son sens mais uniquement sur l'axe des absc
 	public void update(boolean bouge){
-		if(bouge){  //Déplacement s'il y a une voiture
-			if (leftToRight)  //Si ca va de gauche à droite on avance de 1 à droite
+		if(bouge){
+			if (leftToRight)
 				leftPosition = new Case(this.leftPosition.absc+1, this.leftPosition.ord);
-			else{ //inversement
+			else{
 				leftPosition = new Case(this.leftPosition.absc-1, this.leftPosition.ord);
 			}
 
-		}this.addToGraphics();  //l'excécute quelque soit la valeur de car
+		}this.addToGraphics();
 	}
 
 	public Case getLeftPosition(){

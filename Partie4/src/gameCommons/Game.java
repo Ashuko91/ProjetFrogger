@@ -1,6 +1,8 @@
 package gameCommons;
 
 import java.awt.Color;
+import java.time.Duration;
+import java.time.Instant;
 import java.util.Random;
 
 import graphicalElements.Element;
@@ -21,6 +23,9 @@ public class Game {
 	private IFrog frog;
 	private IFroggerGraphics graphic;
 
+	private Instant t0 = Instant.now();
+	private Instant t1;
+	private boolean stop = false;
 	/**
 	 * 
 	 * @param graphic
@@ -41,6 +46,7 @@ public class Game {
 		this.height = height;
 		this.minSpeedInTimerLoops = minSpeedInTimerLoop;
 		this.defaultDensity = defaultDensity;
+
 	}
 
 	/**
@@ -100,11 +106,23 @@ public class Game {
 		testLose();
 		testWin();
 		if (testLose()){
-			graphic.endGameScreen("T'a perdu :(");
+			if(!stop){ //Ca permet de stop le temps
+				stop = true;
+				t1 = Instant.now(); //Prend le temps quand la partie est perdue
+			}
+			double temps = Duration.between(t0, t1).toMillis();//On fait la différence entre les deux et on le veut en secondes
+
+			graphic.endGameScreen("T'es nul, t'as mis : " + (float)temps/1000.f + "s.");
 		}
 		if (testWin()){
-			graphic.endGameScreen("GG bro");
+			if(!stop){     //Ca permet de stop le temps
+				stop = true;
+				t1 = Instant.now();    //Prend le temps quand la partie est gagnée
+			}
+			double temps = Duration.between(t0, t1).toMillis();    //On fait la différence entre les deux et on le veut en secondes
+			graphic.endGameScreen("GG bro, t'as mis :" + (float)temps/1000.f + "s.");
 		}
 	}
+
 
 }
